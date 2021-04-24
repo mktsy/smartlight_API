@@ -1,18 +1,18 @@
 const mongoose = require('mongoose')
 
 const lightSchema = mongoose.Schema({
-    lightNumber: Number,
-    state: Boolean,
-    color: String,
-    timeOn_state: Boolean,
-    timeOff_state: Boolean,
-    setTimeOn_hour: Number,
-    setTimeOn_min: Number,
-    setTimeOff_hour: Number,
-    setTimeOff_min: Number,
-    bill: Number
+    lightNumber: {type: Number, required: true},
+    state: {type: Boolean, required: true},
+    color: {type: String, required: true, default: 'off'},
+    timeOn_state: {type: Boolean, required: true, default: false},
+    timeOff_state: {type: Boolean, required: true, default: false},
+    setTimeOn_hour: {type: Number, required: true, default: 0},
+    setTimeOn_min: {type: Number, required: true, default: 0},
+    setTimeOff_hour: {type: Number, required: true, default: 0},
+    setTimeOff_min: {type: Number, required: true, default: 0},
+    bill: {type: Number, required: true, default: 0},
 })
 
-const Light = mongoose.model('CreateLight', lightSchema)
+const Light = mongoose.model('lights', lightSchema)
 
-export default Light
+module.exports = Light

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const user = require('./routes/userRoute')
+const light = require('./routes/lightRoute')
 
 
 dotenv.config()
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to mini project Smart Lighting API')
 })
 app.use('/api', user)
+app.use('/api', light)
 
 
 

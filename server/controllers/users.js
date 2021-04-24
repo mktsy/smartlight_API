@@ -1,7 +1,7 @@
 const User = require('../models/user')
 const bcryptjs = require('bcryptjs')
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 dotenv.config()
 const salt = parseInt(process.env.SALT)
@@ -49,8 +49,20 @@ module.exports = {
             })
         })
     },
+    updateUser: async (req, res) => {
+        const {_id} = req.params
+        const {name, lastName, role} = req.body
+        const update = Object.assign({name: name}, {lastName: lastName}, {role: role})        
+        const result = await User.findByIdAndUpdate(_id, update, {runValidators: true, new: true})
+        res.status(200).send(result)
+    },
+    deleteUser: async (req, res) => {
+        const {_id} = req.params
+        const result = await User.findByIdAndRemove(_id)
+        console.log('DELETE!')
+        res.status(200).json({message: 'User deleted successfully', result})
+    },
     userLogin: async (req, res) => {
-        console.log(req.body);
         const user = await User.find({ email: req.body.email })
         // console.log(user.length);
         if (user.length == 1) {
@@ -77,5 +89,26 @@ module.exports = {
         const { token } = req.body
         const authorizedData = jwt.verify(token, key)
         res.status(200).json(authorizedData)
+    },
+    changePassword: async (req, res) => {
+        const body = req.body
+        const user = await User.find({email: body.email})
+        console.log(user.length);
+        console.log(user);
+        if (user.length == 1) {
+            const result = await bcryptjs.compare(body.password, user[0].password)
+            console.log(result);
+            if (result) {
+                bcryptjs.hash(body.newpassword, salt, async (err, hash) => {
+                    const update = await User.findByIdAndUpdate(user[0]._id, {password: hash}, {new: true})
+                    res.status(200).json({message: 'Password Updated', update})
+                })
+            } else {
+                res.status(401).json({ message: 'Wrong password' })
+            }
+            
+        } else {
+            res.status(401).json({ message: `No user with email ${body.email}` })
+        }
     }
 }
