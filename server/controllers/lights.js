@@ -10,15 +10,25 @@ module.exports = {
         const result = await Light.findById(_id)
         res.status(200).send(result)
     },
-    updateLight: async (req, res) => {
+    updateLightState: async (req, res) => {
         const {_id} = req.params
-        const {state, color, timeOn_state, timeOff_state, setTimeOn_hour, setTimeOn_min, setTimeOff_hour, setTimeOff_min} = req.body
-        const update = Object.assign(
-                                {state: state}, {color: color}, {timeOn_state: timeOn_state}, 
-                                {timeOff_state: timeOff_state}, {setTimeOn_hour: setTimeOn_hour}, 
-                                {setTimeOn_min: setTimeOn_min}, {setTimeOff_hour: setTimeOff_hour},
-                                {setTimeOff_min: setTimeOff_min})
+        const {state, color} = req.body
+        const update = Object.assign({state: state}, {color: color})
         const result = await Light.findByIdAndUpdate(_id, update, {runValidators: true, new: true})
         res.status(200).send(result)
-    }
+    },
+    updateLightTimeOn: async (req, res) => {
+        const {_id} = req.params
+        const {setTimeOn_hour, setTimeOn_min} = req.body
+        const update = Object.assign({setTimeOn_hour: setTimeOn_hour}, {setTimeOn_min: setTimeOn_min})
+        const result = await Light.findByIdAndUpdate(_id, update, {runValidators: true, new: true})
+        res.status(200).send(result)
+    },
+    updateLightTimeOff: async (req, res) => {
+        const {_id} = req.params
+        const {setTimeOff_hour, setTimeOff_min} = req.body
+        const update = Object.assign({setTimeOff_hour: setTimeOff_hour}, {setTimeOff_min: setTimeOff_min})
+        const result = await Light.findByIdAndUpdate(_id, update, {runValidators: true, new: true})
+        res.status(200).send(result)
+    },
 }

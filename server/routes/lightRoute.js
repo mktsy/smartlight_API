@@ -6,6 +6,14 @@ router.route('/lights')
 
 router.route('/lights/:_id')
     .get(Light.getLightById)
-    .patch(Light.updateLight)
 
+router.route('/lights/state/:_id')
+    .patch(Light.updateLightState)
+
+router.route('/lights/on/:_id')
+    .patch(Light.updateLightTimeOn)
+
+router.route('/lights/off/:_id')
+    .patch(Light.updateLightTimeOff)
+    
 module.exports = router
