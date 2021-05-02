@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const user = require('./routes/userRoute')
 const light = require('./routes/lightRoute')
+const bill = require('./routes/billRoute')
 
 
 dotenv.config()
@@ -18,8 +19,10 @@ app.use(cors())
 app.get('/', (req, res) => {
     res.send('Welcome to mini project Smart Lighting API')
 })
+
 app.use('/api', user)
 app.use('/api', light)
+app.use('/api', bill)
 
 
 
