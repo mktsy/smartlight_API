@@ -21,6 +21,7 @@ router.route('/user/checkrole')
     .post(User.checkRole)
 
 router.route('/changepassword')
+    .all(middleware.checkAuth)
     .post(User.changePassword)
 
 router.route('/users/:_id')
